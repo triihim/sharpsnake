@@ -80,6 +80,11 @@ namespace Snake
 
         }
 
+        public Coordinate GetHeadPosition()
+        {
+            return Positions.First();
+        }
+
         public void Move()
         {
             Positions = CalculateNewPositions();
@@ -131,7 +136,7 @@ namespace Snake
         {
             Coordinate snakeStartLocation = GetGridCenter();
             snake = new Snake(snakeStartLocation);
-            timer = new Timer(500);
+            timer = new Timer(700);
 
             timer.Elapsed += UpdateGame;
             
@@ -179,8 +184,20 @@ namespace Snake
 
         private static void UpdateSnakePositionOnGrid()
         {
+            // Order matters.
+            DetectCollision();
             ClearSnakeFromGrid();
             PlaceSnakeOnGrid();
+        }
+
+        private static void DetectCollision()
+        {
+            Coordinate snakeHeadPos = snake.GetHeadPosition();
+            if(grid[snakeHeadPos.Row, snakeHeadPos.Column].CellType != CellType.Empty)
+            {
+                timer.Stop();
+                Console.WriteLine("You died :(");
+            }
         }
 
         private static void PlaceSnakeOnGrid()
