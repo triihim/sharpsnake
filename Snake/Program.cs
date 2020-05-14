@@ -170,20 +170,26 @@ namespace Snake
         private const int maxNumberOfScorables = 1;
         private static int numberOfScorables = 0;
         private static int score = 0;
+        private static bool gameOver = false;
 
         static void Main(string[] args)
         {
-            Coordinate snakeStartLocation = GetGridCenter();
-            snake = new Snake(snakeStartLocation);
             timer = new Timer(500);
 
             timer.Elapsed += UpdateGame;
-            
-            InitializeGame();
-            
-            timer.Start();
 
             while (true)
+            {
+                InitializeGame();
+                StartGameLoop();
+            }
+        }
+
+        private static void StartGameLoop()
+        {
+            timer.Start();
+
+            while (!gameOver)
             {
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                 switch (keyInfo.Key)
@@ -246,7 +252,11 @@ namespace Snake
 
         private static void InitializeGame()
         {
+            Console.Clear();
             Console.CursorVisible = false;
+            gameOver = false;
+            snake = new Snake(GetGridCenter());
+            numberOfScorables = 0;
             CreateGrid();
             UpdateSnakePositionOnGrid();
             UpdateScorables();
@@ -308,7 +318,10 @@ namespace Snake
         private static void GameOver()
         {
             timer.Stop();
+            gameOver = true;
+            // TODO: Move elsewhere to avoid coupling with console.
             Console.WriteLine("Game over :(");
+            Console.WriteLine("Press any key to play again.");
         }
 
         private static CellType GetCellType(Coordinate coordinate)
