@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snake.ConsoleUI", "Snake\Snake.ConsoleUI.csproj", "{936E862F-A89F-450E-A0D4-B4C818F2C4C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake.Core", "Snake.Core\Snake.Core.csproj", "{2EB1F583-0021-4908-B368-BF4528B41491}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake.Common", "Snake.Common\Snake.Common.csproj", "{64BEB04D-7E5E-4762-A341-535BE81347F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{936E862F-A89F-450E-A0D4-B4C818F2C4C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{936E862F-A89F-450E-A0D4-B4C818F2C4C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{936E862F-A89F-450E-A0D4-B4C818F2C4C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EB1F583-0021-4908-B368-BF4528B41491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EB1F583-0021-4908-B368-BF4528B41491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EB1F583-0021-4908-B368-BF4528B41491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EB1F583-0021-4908-B368-BF4528B41491}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64BEB04D-7E5E-4762-A341-535BE81347F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64BEB04D-7E5E-4762-A341-535BE81347F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64BEB04D-7E5E-4762-A341-535BE81347F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64BEB04D-7E5E-4762-A341-535BE81347F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
