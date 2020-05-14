@@ -9,6 +9,7 @@ namespace Snake
     {
         Empty,
         Obstacle,
+        Scorable,
         Snake
     }
 
@@ -63,8 +64,32 @@ namespace Snake
 
     class Snake
     {
-        public Direction MovementDirection { get; set; }
+        private Direction movementDirection = Direction.Up;
+        private bool shouldGrow = false;
+
         public List<Coordinate> Positions { get; private set; }
+
+        public Direction MovementDirection 
+        {
+            get { return movementDirection; }
+            set 
+            { 
+                if(IsNotOppositeDirection(value))
+                {
+                    movementDirection = value;
+                }
+            }
+        }
+
+        private bool IsNotOppositeDirection(Direction direction)
+        {
+            if (direction == Direction.Up && movementDirection == Direction.Down) return false;
+            if (direction == Direction.Right && movementDirection == Direction.Left) return false;
+            if (direction == Direction.Left && movementDirection == Direction.Right) return false;
+            if (direction == Direction.Down && movementDirection == Direction.Up) return false;
+            return true;
+        }
+
 
         public Snake(Coordinate startingLocation)
         {
@@ -88,6 +113,11 @@ namespace Snake
         public void Move()
         {
             Positions = CalculateNewPositions();
+        }
+
+        public void Grow()
+        {
+            shouldGrow = true;
         }
 
         private List<Coordinate> CalculateNewPositions()
@@ -114,6 +144,12 @@ namespace Snake
                 previousPosition = bodyPartPosition;
             }
 
+            if(shouldGrow)
+            {
+                bodyPositions.Add(previousPosition);
+                shouldGrow = false;
+            }
+
             return bodyPositions;
         }
 
@@ -131,12 +167,15 @@ namespace Snake
         private static Cell[,] grid;
         private static Snake snake;
         private static Timer timer;
+        private const int maxNumberOfScorables = 1;
+        private static int numberOfScorables = 0;
+        private static int score = 0;
 
         static void Main(string[] args)
         {
             Coordinate snakeStartLocation = GetGridCenter();
             snake = new Snake(snakeStartLocation);
-            timer = new Timer(700);
+            timer = new Timer(500);
 
             timer.Elapsed += UpdateGame;
             
@@ -171,7 +210,38 @@ namespace Snake
         {
             snake.Move();
             UpdateSnakePositionOnGrid();
+            UpdateScorables();
             RenderGrid();
+            Console.WriteLine("Score: " + score);
+        }
+
+        private static void UpdateScorables()
+        {
+            if (numberOfScorables < maxNumberOfScorables)
+            {
+                // TODO: Refactor to cleaner solution.
+                List<Cell> emptyCells = GetEmptyGridCells();
+                int rowLimit = emptyCells.Max(cell => cell.Coordinate.Row) + 1;
+                int colLimit = emptyCells.Max(cell => cell.Coordinate.Column) + 1;
+                Random random = new Random();
+                int row = random.Next(1, rowLimit);
+                int col = random.Next(1, colLimit);
+                grid[row, col].CellType = CellType.Scorable;
+                numberOfScorables++;
+            }
+        }
+
+        private static List<Cell> GetEmptyGridCells()
+        {
+            List<Cell> emptyCells = new List<Cell>();
+            foreach (Cell cell in grid)
+            {
+                if (cell.CellType == CellType.Empty)
+                {
+                    emptyCells.Add(cell);
+                }
+            }
+            return emptyCells;
         }
 
         private static void InitializeGame()
@@ -179,30 +249,75 @@ namespace Snake
             Console.CursorVisible = false;
             CreateGrid();
             UpdateSnakePositionOnGrid();
+            UpdateScorables();
             RenderGrid();
         }
 
         private static void UpdateSnakePositionOnGrid()
         {
             // Order matters.
-            DetectCollision();
+            CheckForCollision();    
             ClearSnakeFromGrid();
             PlaceSnakeOnGrid();
         }
 
-        private static void DetectCollision()
+        private static void CheckForCollision()
         {
-            Coordinate snakeHeadPos = snake.GetHeadPosition();
-            if(grid[snakeHeadPos.Row, snakeHeadPos.Column].CellType != CellType.Empty)
+            Coordinate movedPosition = snake.GetHeadPosition();
+            Cell collidedCell = GetGridCell(movedPosition);
+            if(collidedCell.CellType != CellType.Empty)
             {
-                timer.Stop();
-                Console.WriteLine("You died :(");
+                HandleCollision(collidedCell);
             }
+        }
+
+        private static Cell GetGridCell(Coordinate movedPosition)
+        {
+            return grid[movedPosition.Row, movedPosition.Column];
+        }
+
+        private static void HandleCollision(Cell collidedCell)
+        {
+            switch (collidedCell.CellType)
+            {
+                case CellType.Obstacle:
+                case CellType.Snake:
+                    GameOver();
+                    break;
+                case CellType.Scorable:
+                    AwardScore();
+                    ClearGridCell(collidedCell);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void AwardScore()
+        {
+            score++;
+            numberOfScorables--;
+            snake.Grow();
+        }
+
+        private static void ClearGridCell(Cell cell)
+        {
+            cell.CellType = CellType.Empty;
+        }
+
+        private static void GameOver()
+        {
+            timer.Stop();
+            Console.WriteLine("Game over :(");
+        }
+
+        private static CellType GetCellType(Coordinate coordinate)
+        {
+            return grid[coordinate.Row, coordinate.Column].CellType;
         }
 
         private static void PlaceSnakeOnGrid()
         {
-            // TODO: Detect collisions.
             foreach (Coordinate snakePos in snake.Positions)
             {
                 grid[snakePos.Row, snakePos.Column].CellType = CellType.Snake;
@@ -274,6 +389,8 @@ namespace Snake
                     return "  ";
                 case CellType.Obstacle:
                     return " X";
+                case CellType.Scorable:
+                    return " ?";
                 case CellType.Snake:
                     return " O";
                 default:
