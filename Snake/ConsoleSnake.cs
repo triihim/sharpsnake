@@ -33,10 +33,25 @@ namespace Snake
         {
             if(game.IsRunning())
             {
+                Console.SetCursorPosition(0, 0);
+                RenderHeader();
                 RenderGrid();
                 RenderScore();
             }
-        } 
+        }
+
+        private void RenderHeader()
+        {
+            // Although ugly, the formatting must not be changed.
+            string headerTitle = @"                               __    __    _ 
+   _____ ____   __  __ __  __ / /__ / /__ (_)
+  / ___// __ \ / / / // / / // //_// //_// / 
+ (__  )/ / / // /_/ // /_/ // ,<  / ,<  / /  
+/____//_/ /_/ \__,_/ \__,_//_/|_|/_/|_|/_/   
+                                          ";
+
+            Console.WriteLine(headerTitle);
+        }
 
         private void GameOver()
         {
@@ -83,7 +98,6 @@ namespace Snake
 
         private void RenderGrid()
         {
-            Console.SetCursorPosition(0, 0);
 
             CellType[,] grid = game.GetCurrentGameGridState();
             int rows = grid.GetLength(0);
