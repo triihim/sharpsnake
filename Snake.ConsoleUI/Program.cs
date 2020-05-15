@@ -6,8 +6,8 @@ namespace Snake
     {
         static void Main()
         {
-            int gridSideLength = 20;
-            int gameUpdateIntervalMs = 400;
+            int gridSideLength = 18;
+            int gameUpdateIntervalMs = 300;
             IInputSystem inputSystem = new ConsoleInputSystem(Direction.Up);
             GameConfiguration configuration = new GameConfiguration(gridSideLength, gameUpdateIntervalMs, inputSystem);
 
