@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Timers;
 using Snake.Common;
+using Snake.GridSystem;
 
 namespace Snake.Core
 {
@@ -11,7 +11,7 @@ namespace Snake.Core
         private readonly Timer timer;
         private readonly GameConfiguration configuration;
         private GameState gameState;
-        private Grid grid;
+        private SquareGrid grid;
         private Snake snake;
         private IInputSystem inputSystem;
 
@@ -22,7 +22,7 @@ namespace Snake.Core
         {
             this.configuration = configuration;
             inputSystem = configuration.InputSystem;
-            grid = new Grid(configuration.GridSideLength);
+            grid = new SquareGrid(configuration.GridSideLength);
             timer = new Timer(configuration.UpdateIntervalMs);
             gameState = new GameState();
         }
@@ -37,7 +37,7 @@ namespace Snake.Core
 
         public void Reset()
         {
-            grid = new Grid(configuration.GridSideLength);
+            grid = new SquareGrid(configuration.GridSideLength);
             gameState = new GameState();
             Coordinate snakeStartingPosition = grid.GetGridCenter();
             snake = new Snake(snakeStartingPosition);

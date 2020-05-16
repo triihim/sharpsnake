@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Snake.Common;
+using Snake.GridSystem;
 
 namespace Snake.Core
 {

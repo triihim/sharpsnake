@@ -10,6 +10,7 @@ namespace Snake
 
         public ConsoleInputSystem(Direction defaultDirection)
         {
+            this.defaultDirection = defaultDirection;
             currentMovementDirection = defaultDirection;
         }
 

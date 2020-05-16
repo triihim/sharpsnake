@@ -1,8 +1,8 @@
 ﻿using Snake.Common;
 
-namespace Snake.Core
+namespace Snake.GridSystem
 {
-    internal class Cell
+    public class Cell
     {
         public Coordinate Coordinate { get; }
         public CellType CellType { get; set; }
