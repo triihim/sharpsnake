@@ -7,6 +7,12 @@
         public int CurrentNumberOfScorables { get; private set; }
         public bool IsGameOver { get; set; }
         public int Score { get; private set; }
+        public int HighScore { get; private set; }
+
+        public GameState()
+        {
+            HighScore = Core.HighScore.GetHighScore();
+        }
 
         public bool IsMaxNumberOfScorablesPlaced()
         {

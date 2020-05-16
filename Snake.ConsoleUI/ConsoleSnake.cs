@@ -5,6 +5,7 @@ using Snake.Core;
 
 namespace Snake
 {
+    // TODO: Refactor this mess.
     internal class ConsoleSnake
     {
         private Game game;
@@ -36,22 +37,47 @@ namespace Snake
                 Console.SetCursorPosition(0, 0);
                 RenderHeader();
                 RenderGrid();
-                RenderScore();
+                RenderFooter();
             }
+        }
+
+        private void RenderFooter()
+        {
+            int currentScore = game.GetCurrentScore();
+            int highScore = game.GetHighScore();
+            Console.Write("Score: " + currentScore);
+            Console.WriteLine("\tHigh Score: " + highScore);
         }
 
         private void RenderHeader()
         {
             // Although ugly, the formatting must not be changed.
-            string headerTitle = @"   ____               __    __    _ 
-  / __/__  __ ____ __/ /__ / /__ (_)
- _\ \/ _ \/ // / // /  '_//  '_// / 
-/___/_//_/\_,_/\_,_/_/\_\/_/\_\/_/  
-                                    ";
+            string headerTitle = @"   ______                 ____          __      
+  / __/ /  ___ ________  / __/__  ___ _/ /_____ 
+ _\ \/ _ \/ _ `/ __/ _ \_\ \/ _ \/ _ `/  '_/ -_)
+/___/_//_/\_,_/_/ / .__/___/_//_/\_,_/_/\_\\__/ 
+                 /_/                            ";
 
             Console.WriteLine(headerTitle);
         }
 
+        private void RenderGrid()
+        {
+
+            CellType[,] grid = game.GetCurrentGameGridState();
+            int rows = grid.GetLength(0);
+            int cols = grid.GetLength(1);
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    Console.Write(GetPrintSymbol(grid[row, col]));
+                }
+                Console.WriteLine();
+            }
+        }
+        
         private void GameOver()
         {
             ShowGameOverMenu();
@@ -67,7 +93,13 @@ namespace Snake
                                           ";
 
             Console.WriteLine(gameOverText);
-            RenderScore();
+            Console.WriteLine("Final score: " + game.GetCurrentScore());
+
+            if (game.GetCurrentScore() > game.GetHighScore())
+            {
+                Console.WriteLine("NEW HIGH SCORE!");
+            }
+
             Console.WriteLine("\nPress any key to play again.");
 
             Console.ReadKey();
@@ -79,11 +111,6 @@ namespace Snake
             Console.Clear();
             game.Reset();
             game.StartGameLoop();
-        }
-
-        private void RenderScore()
-        {
-            Console.WriteLine("Score: " + game.GetCurrentScore());
         }
 
         private string GetPrintSymbol(CellType cellType)
@@ -103,21 +130,5 @@ namespace Snake
             }
         }
 
-        private void RenderGrid()
-        {
-
-            CellType[,] grid = game.GetCurrentGameGridState();
-            int rows = grid.GetLength(0);
-            int cols = grid.GetLength(1);
-
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < cols; col++)
-                {
-                    Console.Write(GetPrintSymbol(grid[row, col]));
-                }
-                Console.WriteLine();
-            }
-        }
     }
 }

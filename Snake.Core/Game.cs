@@ -54,6 +54,11 @@ namespace Snake.Core
             return gameState.Score;
         }
 
+        public int GetHighScore()
+        {
+            return gameState.HighScore;
+        }
+
         public void StartGameLoop()
         {
             timer.Start();
@@ -175,7 +180,17 @@ namespace Snake.Core
         {
             timer.Stop();
             gameState.IsGameOver = true;
+            UpdateHighScore();
         }
 
+        private void UpdateHighScore()
+        {
+            int currentHighScore = HighScore.GetHighScore();
+            
+            if(gameState.Score > currentHighScore)
+            {
+                HighScore.UpdateHighScore(gameState.Score);
+            }
+        }
     }
 }

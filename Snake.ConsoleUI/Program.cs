@@ -1,7 +1,9 @@
 ﻿using Snake.Common;
+using System;
 
 namespace Snake
 {
+
     public class Program
     {
         static void Main()
