@@ -127,17 +127,19 @@ namespace Snake.Core
         {
             if (gameState.IsMaxNumberOfScorablesPlaced() == false)
             {
-                List<Coordinate> empties = grid.GetEmptyGridCellCoordinates();
-             
-                int rowLimit = empties.Max(coordinate => coordinate.Row) + 1;
-                int colLimit = empties.Max(coordinate => coordinate.Column) + 1;
-                
-                Coordinate randomCoordinate = Coordinate.GetRandomCoordinate(1, rowLimit, 1, colLimit);
-                
+                Coordinate randomCoordinate = GetRandomEmptyGridCoordinate();
                 grid.SetGridCellType(randomCoordinate, CellType.Scorable);
-
                 gameState.IncrementScorableCount();
             }
+        }
+
+        private Coordinate GetRandomEmptyGridCoordinate()
+        {
+            List<Coordinate> empties = grid.GetEmptyGridCellCoordinates();
+            Random random = new Random();
+            int randomIndex = random.Next(0, empties.Count);
+            Coordinate randomCoordinate = empties[randomIndex];
+            return randomCoordinate;
         }
 
         private void HandleCollision(Cell collidedCell)
