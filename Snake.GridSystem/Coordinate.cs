@@ -2,9 +2,9 @@
 
 using System;
 
-namespace Snake.Core
+namespace Snake.GridSystem
 {
-    internal class Coordinate
+    public class Coordinate
     {
         public int Row { get; }
         public int Column { get; }

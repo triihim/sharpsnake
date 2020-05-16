@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Snake.Common\Snake.Common.csproj" />
-    <ProjectReference Include="..\Snake.GridSystem\Snake.GridSystem.csproj" />
   </ItemGroup>
 
 </Project>

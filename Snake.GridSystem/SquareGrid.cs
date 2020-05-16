@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Snake.Common;
 
-namespace Snake.Core
+namespace Snake.GridSystem
 {
-    internal class Grid
+    public class SquareGrid
     {
         private readonly int sideLength;
 
         private Cell[,] grid;
 
-        public Grid(int sideLength)
+        public SquareGrid(int sideLength)
         {
             this.sideLength = sideLength;
             CreateGrid();
