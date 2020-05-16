@@ -43,12 +43,11 @@ namespace Snake
         private void RenderHeader()
         {
             // Although ugly, the formatting must not be changed.
-            string headerTitle = @"                               __    __    _ 
-   _____ ____   __  __ __  __ / /__ / /__ (_)
-  / ___// __ \ / / / // / / // //_// //_// / 
- (__  )/ / / // /_/ // /_/ // ,<  / ,<  / /  
-/____//_/ /_/ \__,_/ \__,_//_/|_|/_/|_|/_/   
-                                          ";
+            string headerTitle = @"   ____               __    __    _ 
+  / __/__  __ ____ __/ /__ / /__ (_)
+ _\ \/ _ \/ // / // /  '_//  '_// / 
+/___/_//_/\_,_/\_,_/_/\_\/_/\_\/_/  
+                                    ";
 
             Console.WriteLine(headerTitle);
         }
@@ -60,8 +59,16 @@ namespace Snake
 
         private void ShowGameOverMenu()
         {
-            Console.WriteLine("Game over :(");
-            Console.WriteLine("Press any key to play again.");
+            Console.Clear();
+            string gameOverText = @"  _____                 ____              
+ / ___/__ ___ _  ___   / __ \_  _____ ____
+/ (_ / _ `/  ' \/ -_) / /_/ / |/ / -_) __/
+\___/\_,_/_/_/_/\__/  \____/|___/\__/_/   
+                                          ";
+
+            Console.WriteLine(gameOverText);
+            RenderScore();
+            Console.WriteLine("\nPress any key to play again.");
 
             Console.ReadKey();
             Restart();
